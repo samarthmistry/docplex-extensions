@@ -43,8 +43,10 @@ docs = [
     "ansys-sphinx-theme==1.0.3",
     "sphinx_design==0.6.1",
     "sphinx_gallery==0.17.1",
-    "matplotlib==3.9.2",                      # for sphinx_gallery to run py files
+    "matplotlib==3.9.2",                      # for sphinx_gallery to run py fies
     "numpy<2.0",                              # for compatibility with matplotlib
+    "pandas>=1.5.0",                          # for pandas accessor
+    "pandas-stubs>=1.5.0",                    # for pandas accessor
 ]
 dev = [
     "ruff>=0.7.0",

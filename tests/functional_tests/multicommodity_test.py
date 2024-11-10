@@ -165,24 +165,26 @@ def test_multicommodity():
 
     sol = dex.solve(model)
 
-    # fmt: off
-    assert sol.to_string(print_zeros=False).replace('-0.000', '').replace('0.000', '') == (
-        'solution for: multicommodity\nobjective: 229850\nstatus: OPTIMAL_SOLUTION(2)\nNUM-UNITS_CL'
-        'EV_DET_coils=525.000\nNUM-UNITS_CLEV_DET_plate=100.000\nNUM-UNITS_CLEV_FRA_bands=225.000\n'
-        'NUM-UNITS_CLEV_FRA_plate=50.000\nNUM-UNITS_CLEV_FRE_coils=-0.000\nNUM-UNITS_CLEV_LAF_bands'
-        '=50.000\nNUM-UNITS_CLEV_LAF_coils=375.000\nNUM-UNITS_CLEV_LAN_coils=350.000\nNUM-UNITS_CLE'
-        'V_STL_bands=350.000\nNUM-UNITS_CLEV_STL_coils=100.000\nNUM-UNITS_CLEV_STL_plate=100.000\nN'
-        'UM-UNITS_CLEV_WIN_bands=75.000\nNUM-UNITS_CLEV_WIN_coils=250.000\nNUM-UNITS_CLEV_WIN_plate'
-        '=50.000\nNUM-UNITS_GARY_FRE_coils=525.000\nNUM-UNITS_GARY_FRE_plate=100.000\nNUM-UNITS_GAR'
-        'Y_LAF_coils=-0.000\nNUM-UNITS_GARY_LAN_bands=100.000\nNUM-UNITS_GARY_LAN_coils=50.000\nNUM'
-        '-UNITS_GARY_STL_bands=300.000\nNUM-UNITS_GARY_STL_coils=225.000\nNUM-UNITS_GARY_STL_plate='
-        '100.000\nNUM-UNITS_PITT_DET_bands=300.000\nNUM-UNITS_PITT_DET_coils=225.000\nNUM-UNITS_PIT'
-        'T_FRA_bands=75.000\nNUM-UNITS_PITT_FRA_coils=500.000\nNUM-UNITS_PITT_FRA_plate=50.000\nNUM'
-        '-UNITS_PITT_FRE_bands=225.000\nNUM-UNITS_PITT_FRE_coils=325.000\nNUM-UNITS_PITT_LAF_bands='
-        '200.000\nNUM-UNITS_PITT_LAF_coils=125.000\nNUM-UNITS_PITT_LAF_plate=250.000\nNUM-UNITS_PIT'
-        'T_STL_coils=625.000\nNUM-UNITS_PITT_STL_plate=-0.000\nUSE-ROUTE_CLEV_DET=1\nUSE-ROUTE_CLEV'
-        '_FRA=1\nUSE-ROUTE_CLEV_LAF=1\nUSE-ROUTE_CLEV_LAN=1\nUSE-ROUTE_CLEV_STL=1\nUSE-ROUTE_CLEV_W'
-        'IN=1\nUSE-ROUTE_GARY_FRE=1\nUSE-ROUTE_GARY_LAN=1\nUSE-ROUTE_GARY_STL=1\nUSE-ROUTE_PITT_DET'
-        '=1\nUSE-ROUTE_PITT_FRA=1\nUSE-ROUTE_PITT_FRE=1\nUSE-ROUTE_PITT_LAF=1\nUSE-ROUTE_PITT_STL=1'
-        '\n'
-    ).replace('-0.000', '').replace('0.000', '')
+    sol_str = ''.join(
+        [
+            f'{var.name}={round(val, 3)}'
+            for var, val in sol.as_dict().items()
+            if abs(round(val, 3)) > 0
+        ]
+    )
+    assert sol_str == (
+        'NUM-UNITS_CLEV_DET_coils=525.0NUM-UNITS_CLEV_DET_plate=100.0NUM-UNITS_CLEV_FRA_bands=225.0NU'
+        'M-UNITS_CLEV_FRA_plate=50.0NUM-UNITS_CLEV_LAF_bands=50.0NUM-UNITS_CLEV_LAF_coils=375.0NUM-UN'
+        'ITS_CLEV_LAN_coils=350.0NUM-UNITS_CLEV_STL_bands=350.0NUM-UNITS_CLEV_STL_coils=100.0NUM-UNIT'
+        'S_CLEV_STL_plate=100.0NUM-UNITS_CLEV_WIN_bands=75.0NUM-UNITS_CLEV_WIN_coils=250.0NUM-UNITS_C'
+        'LEV_WIN_plate=50.0NUM-UNITS_GARY_FRE_coils=525.0NUM-UNITS_GARY_FRE_plate=100.0NUM-UNITS_GARY'
+        '_LAN_bands=100.0NUM-UNITS_GARY_LAN_coils=50.0NUM-UNITS_GARY_STL_bands=300.0NUM-UNITS_GARY_ST'
+        'L_coils=225.0NUM-UNITS_GARY_STL_plate=100.0NUM-UNITS_PITT_DET_bands=300.0NUM-UNITS_PITT_DET_'
+        'coils=225.0NUM-UNITS_PITT_FRA_bands=75.0NUM-UNITS_PITT_FRA_coils=500.0NUM-UNITS_PITT_FRA_pla'
+        'te=50.0NUM-UNITS_PITT_FRE_bands=225.0NUM-UNITS_PITT_FRE_coils=325.0NUM-UNITS_PITT_LAF_bands='
+        '200.0NUM-UNITS_PITT_LAF_coils=125.0NUM-UNITS_PITT_LAF_plate=250.0NUM-UNITS_PITT_STL_coils=62'
+        '5.0USE-ROUTE_CLEV_DET=1.0USE-ROUTE_CLEV_FRA=1.0USE-ROUTE_CLEV_LAF=1.0USE-ROUTE_CLEV_LAN=1.0U'
+        'SE-ROUTE_CLEV_STL=1.0USE-ROUTE_CLEV_WIN=1.0USE-ROUTE_GARY_FRE=1.0USE-ROUTE_GARY_LAN=1.0USE-R'
+        'OUTE_GARY_STL=1.0USE-ROUTE_PITT_DET=1.0USE-ROUTE_PITT_FRA=1.0USE-ROUTE_PITT_FRE=1.0USE-ROUTE'
+        '_PITT_LAF=1.0USE-ROUTE_PITT_STL=1.0'
+    )

@@ -1,12 +1,12 @@
 # docplex-extensions
 
-[![license](https://img.shields.io/pypi/l/docplex-extensions.svg)](https://github.com/samarthmistry/docplex-extensions/blob/main/LICENSE)
-[![pypi](https://img.shields.io/pypi/v/docplex-extensions.svg)](https://pypi.python.org/pypi/docplex-extensions)
-[![pyversions](https://img.shields.io/pypi/pyversions/docplex-extensions.svg)](https://pypi.python.org/pypi/docplex-extensions)
+[![license](https://img.shields.io/pypi/l/docplex-extensions)](https://github.com/samarthmistry/docplex-extensions/blob/main/LICENSE)
+[![pypi](https://img.shields.io/pypi/v/docplex-extensions)](https://pypi.python.org/pypi/docplex-extensions)
+[![pyversions](https://img.shields.io/pypi/pyversions/docplex-extensions)](https://pypi.python.org/pypi/docplex-extensions)
 
 [![CI](https://github.com/samarthmistry/docplex-extensions/actions/workflows/ci.yaml/badge.svg)](https://github.com/samarthmistry/docplex-extensions/blob/main/.github/workflows/ci.yaml)
 [![Tests](https://github.com/samarthmistry/docplex-extensions/actions/workflows/tests.yaml/badge.svg)](https://github.com/samarthmistry/docplex-extensions/blob/main/.github/workflows/tests.yaml)
-[![Coverage](coverage.svg)](https://github.com/samarthmistry/docplex-extensions/blob/main/coverage.svg)
+[![Coverage](https://raw.githubusercontent.com/samarthmistry/docplex-extensions/main/coverage.svg)](https://github.com/samarthmistry/docplex-extensions/tree/main/tests/unit_tests)
 
 A collection of custom data structures and user-friendly functions for mathematical optimization modeling with [DOcplex — IBM® Decision Optimization CPLEX® Modeling for Python](http://ibmdecisionoptimization.github.io/docplex-doc).
 

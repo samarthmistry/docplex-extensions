@@ -22,7 +22,7 @@ Links
 -----
 
 * [Documentation](https://docplex-extensions.readthedocs.io/en/stable)
-* [Installation](https://docplex-extensions.readthedocs.io/en/stable/installation.html)
+* [Installation](https://docplex-extensions.readthedocs.io/en/stable/installation/index.html)
 * [Source code](https://github.com/samarthmistry/docplex-extensions)
 * [Changelog](https://github.com/samarthmistry/docplex-extensions/releases)
 

@@ -50,6 +50,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.py }}
+          cache: 'pip'
 
       - name: Install tox and its GitHub action plugin
         if: steps.changed-py-files.outputs.any_changed == 'true'

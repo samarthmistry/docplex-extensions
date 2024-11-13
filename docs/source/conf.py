@@ -102,22 +102,17 @@ numpydoc_validation_exclude = {
     '.key_name',  # property
     '.key_names',  # property
     '.value_name',  # property
-    '.missing_value',  # property
 }
 numpydoc_validation_overrides = {
     'PR01': [
         '^Not supported by ',  # _param_dicts.ParamDictBase.update, .fromkeys
         #                      # _var_dicts.VarDictBase.pop, setdefault, .update, .fromkeys
         '^Solve the DOcplex model ',  # _model_funcs.solve
-        '^Get the parameter value for ',  # _param_dicts.ParamDict1D.lookup, ParamDictND.lookup
-        '^Get the variable for the ',  # _var_dicts.VarDict1D.lookup, VarDictND.lookup
     ],
     'PR02': [
         '^Not supported by ',  # _param_dicts.ParamDictBase.update, .fromkeys
         #                      # _var_dicts.VarDictBase.pop, setdefault, .update, .fromkeys
         '^Solve the DOcplex model ',  # _model_funcs.solve
-        '^Get the parameter value for ',  # _param_dicts.ParamDict1D.lookup, ParamDictND.lookup
-        '^Get the variable for the ',  # _var_dicts.VarDict1D.lookup, VarDictND.lookup
     ],
     'SS05': [
         '^Preprocess ',  # _var_funcs._preprocess_bound

@@ -33,12 +33,12 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install ".[dev, cplex-runtime]"
 
-      - name: Format with Ruff
-        run: ruff format
-
       - name: Lint with Ruff
         # Will FAIL if any unfixable lint rule is violated
         run: ruff check --fix --show-fixes --output-format=github
+
+      - name: Format with Ruff
+        run: ruff format
 
       - name: Check for file changes from Ruff
         uses: tj-actions/verify-changed-files@v20

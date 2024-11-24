@@ -369,7 +369,7 @@ class VarDictND(VarDictBase[ElemNDT, VarT], DictNDMixin[ElemNDT, VarT]):
 
         Parameters
         ----------
-        key : key
+        *key : key
 
         Returns
         -------

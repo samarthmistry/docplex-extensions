@@ -166,7 +166,7 @@ class ParamDictBase(dict[ElemT, ParamT], DictBaseMixin[ElemT, ParamT]):
         return item
 
     def setdefault(self, key: ElemT, default: ParamT, /) -> ParamT:
-        """Get the parameter value for specified key, or the default if not found.
+        """Get the parameter value for the specified key, or the default if not found.
 
         If the key is not found, insert it with the parameter value of default in the ParamDict.
 
@@ -580,7 +580,7 @@ class ParamDictND(ParamDictBase[ElemNDT, ParamT], DictNDMixin[ElemNDT, ParamT]):
 
         Parameters
         ----------
-        key : key
+        *key : key
 
         Returns
         -------

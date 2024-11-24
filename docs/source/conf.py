@@ -107,12 +107,12 @@ numpydoc_validation_overrides = {
     'PR01': [
         '^Not supported by ',  # _param_dicts.ParamDictBase.update, .fromkeys
         #                      # _var_dicts.VarDictBase.pop, setdefault, .update, .fromkeys
-        '^Solve the DOcplex model ',  # _model_funcs.solve
+        '^Solve a DOcplex model ',  # _model_funcs.solve
     ],
     'PR02': [
         '^Not supported by ',  # _param_dicts.ParamDictBase.update, .fromkeys
         #                      # _var_dicts.VarDictBase.pop, setdefault, .update, .fromkeys
-        '^Solve the DOcplex model ',  # _model_funcs.solve
+        '^Solve a DOcplex model ',  # _model_funcs.solve
     ],
     'SS05': [
         '^Preprocess ',  # _var_funcs._preprocess_bound

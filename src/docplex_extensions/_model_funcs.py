@@ -11,7 +11,7 @@ from docplex.mp.solution import SolveSolution
 
 
 def print_problem_stats(model: Model) -> None:
-    """Print problem statistics of the DOcplex model.
+    """Print problem statistics of a DOcplex model.
 
     Parameters
     ----------
@@ -20,7 +20,7 @@ def print_problem_stats(model: Model) -> None:
 
     See Also
     --------
-    print_solution_quality_stats : For printing incumbent solution's quality statistics.
+    print_solution_quality_stats : For printing quality statistics of the incumbent solution.
     """
     cplex = model.get_cplex()
     if cplex.get_problem_name() != model.name:
@@ -29,7 +29,7 @@ def print_problem_stats(model: Model) -> None:
 
 
 def print_solution_quality_stats(model: Model) -> None:
-    """Print quality statistics of the incumbent DOcplex model solution, if available.
+    """Print quality statistics of the incumbent solution of a DOcplex model, if available.
 
     Parameters
     ----------
@@ -47,7 +47,7 @@ def print_solution_quality_stats(model: Model) -> None:
 
 
 def solve(model: Model, **kwargs: Any) -> SolveSolution | None:
-    """Solve the DOcplex model with additional logging output for problem and solution statistics.
+    """Solve a DOcplex model with additional logging output for problem and solution statistics.
 
     This function is a simple wrapper around `docplex.mp.model.Model`'s `solve` method and takes the
     same keyword arguments.
@@ -62,7 +62,7 @@ def solve(model: Model, **kwargs: Any) -> SolveSolution | None:
         * ``True`` or ``'stdout'``: Log is output to stdout.
         * ``'stderr'``: Log is output to stderr.
         * ``False`` or ``None``: No log output.
-        * Stream object (like file path as str): Log is output to the stream object.
+        * Stream object (like filename/path as str): Log is output to the stream object.
 
         Default is the value of `context.solver.log_output` setting. Specifying this argument
         overwrites that setting.
@@ -76,7 +76,7 @@ def solve(model: Model, **kwargs: Any) -> SolveSolution | None:
         `context.cplex_parameters`, in one of the following forms:
 
         * `RootParameterGroup`: This can obtained by cloning the model's parameters
-        * `dict` of path-like names and values.
+        * `dict` of parameter names and values.
 
     checker : str, optional
         Type of checks performed, in one of the following forms:
@@ -102,7 +102,8 @@ def solve(model: Model, **kwargs: Any) -> SolveSolution | None:
     See Also
     --------
     print_problem_stats : For printing problem statistics separately.
-    print_solution_quality_stats : For printing incumbent solution's quality statistics separately.
+    print_solution_quality_stats : For printing quality statistics of the incumbent solution
+        separately.
     """
     if not isinstance(model, Model):
         raise TypeError('`model` should be docplex.mp.model.Model')

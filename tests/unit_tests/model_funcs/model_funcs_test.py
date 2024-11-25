@@ -127,10 +127,19 @@ def test_solve_logoutput_stderr_pass(capsys, mdl, expected_log_start, expected_l
     validate_logoutput(captured, expected_log_start % mdl.name, expected_log_end)
 
 
-def test_solve_logoutput_file_pass(tmpdir, mdl, expected_log_start, expected_log_end):
-    file = tmpdir.join('file.log')
-    _ = solve(mdl, log_output=file.strpath)
-    captured = file.read()
+def test_solve_logoutput_filepath_pass(tmp_path, mdl, expected_log_start, expected_log_end):
+    file = tmp_path / 'file.log'
+    _ = solve(mdl, log_output=str(file))
+    captured = file.read_text(encoding='utf-8')
+
+    validate_logoutput(captured, expected_log_start % mdl.name, expected_log_end)
+
+
+def test_solve_logoutput_fileobj_pass(tmp_path, mdl, expected_log_start, expected_log_end):
+    file = tmp_path / 'file.log'
+    with file.open('w') as f:
+        _ = solve(mdl, log_output=f)
+    captured = file.read_text(encoding='utf-8')
 
     validate_logoutput(captured, expected_log_start % mdl.name, expected_log_end)
 

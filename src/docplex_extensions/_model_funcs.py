@@ -56,13 +56,15 @@ def solve(model: Model, **kwargs: Any) -> SolveSolution | None:
     ----------
     model : docplex.mp.model.Model
         DOcplex model.
-    log_output : bool or str, optional
+    log_output : bool or str or stream object, optional
         Log output switch, in one of the following forms:
 
-        * ``True`` or ``'stdout'``: Log is output to stdout.
-        * ``'stderr'``: Log is output to stderr.
+        * ``True`` or ``'stdout'`` or ``'sys.stdout'``: Log is output to stdout.
+        * ``'stderr'`` or ``'sys.stderr'``: Log is output to stderr.
         * ``False`` or ``None``: No log output.
-        * Stream object (like filename/path as str): Log is output to the stream object.
+        * File path (in form of str): Log is output to the file.
+        * Stream object (a file-like object with a write method and a flush method): Log is output
+          to the stream object.
 
         Default is the value of `context.solver.log_output` setting. Specifying this argument
         overwrites that setting.

@@ -131,9 +131,10 @@ def solve(model: Model, **kwargs: Any) -> SolveSolution | None:
         # Write problem statistics
         if cplex.get_problem_name() != model.name:
             cplex.set_problem_name(model.name)
-        stream.write(f'  {model.problem_type} problem statistics  '.center(div_len, '-') + '\n\n')
-        stream.write(str(cplex.get_stats()))
-        stream.write('\n' + '  CPLEX optimizer log  '.center(div_len, '-') + '\n\n')
+        log_header = f'  {model.problem_type} problem statistics  '.center(div_len, '-') + '\n\n'
+        log_header += str(cplex.get_stats())
+        log_header += '\n' + '  CPLEX optimizer log  '.center(div_len, '-') + '\n\n'
+        stream.write(log_header)
 
     # Don't close the output stream; hand it over to `model.solve`
     solve_setting = stream if to_log else None
@@ -148,9 +149,10 @@ def solve(model: Model, **kwargs: Any) -> SolveSolution | None:
             stream = open(stream._target.name, 'a')
 
         # Write solution quality statistics
-        stream.write('\n' + '  Solution quality statistics  '.center(div_len, '-') + '\n\n')
-        stream.write(str(cplex.solution.get_quality_metrics()))
-        stream.write('\n' + '-' * div_len + '\n')
+        log_footer = '\n' + '  Solution quality statistics  '.center(div_len, '-') + '\n\n'
+        log_footer += str(cplex.solution.get_quality_metrics())
+        log_footer += '\n' + '-' * div_len + '\n'
+        stream.write(log_footer)
 
         # When logging to stream objects, close them at the end
         if to_reopen:

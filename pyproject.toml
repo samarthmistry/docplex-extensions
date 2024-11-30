@@ -178,11 +178,11 @@ exclude_also = [
 legacy_tox_ini = """
     [tox]
     min_version = 4.0
-    env_list = py{310,311,312,313}, cpx{201,221}, pd{15,20,X}
+    env_list = py{310,311,312,313}, mypy, cpx{2010,2210,2211}, pd{15,20,X}
 
     [gh]
     python =
-        3.10 = py310, cpx201, cpx221, pd15, pd20, pdX
+        3.10 = py310, mypy, cpx2010, cpx2210, cpx2211, pd15, pd20, pdX
         3.11 = py311
         3.12 = py312
         3.13 = py313
@@ -196,6 +196,13 @@ legacy_tox_ini = """
     package = wheel
     commands =
         pytest --basetemp="{env_tmp_dir}"
+
+    [testenv:mypy]
+    description = Run doctests, unit tests, functional tests, and typing tests
+    setenv = PY_IGNORE_IMPORTMISMATCH=1
+    extras = tests
+    package = wheel
+    commands =
         mypy src
         mypy ./tests/typing_tests/
 
@@ -208,11 +215,9 @@ legacy_tox_ini = """
             --ignore=tests/unit_tests/model_funcs/ \
             --ignore=tests/functional_tests/ \
             --ignore=src/docplex_extensions/_model_funcs.py
-        mypy src
-        mypy ./tests/typing_tests/
 
-    [testenv:cpx201]
-    description = Run unit tests for model functions against CPLEX 20.1
+    [testenv:cpx2010]
+    description = Run unit tests for model functions against CPLEX 20.1.0
     basepython = 3.10
     deps = cplex==20.1.0.4
     extras = tests
@@ -220,10 +225,19 @@ legacy_tox_ini = """
         pytest --basetemp="{env_tmp_dir}" --no-cov \
             tests/unit_tests/model_funcs/
 
-    [testenv:cpx221]
-    description = Run unit tests for model functions against CPLEX 22.1
+    [testenv:cpx2210]
+    description = Run unit tests for model functions against CPLEX 22.1.0
     basepython = 3.10
     deps = cplex==22.1.0.0
+    extras = tests
+    commands =
+        pytest --basetemp="{env_tmp_dir}" --no-cov \
+            tests/unit_tests/model_funcs/
+
+    [testenv:cpx2211]
+    description = Run unit tests for model functions against CPLEX 22.1.1
+    basepython = 3.10
+    deps = cplex==22.1.1.2
     extras = tests
     commands =
         pytest --basetemp="{env_tmp_dir}" --no-cov \
@@ -236,7 +250,7 @@ legacy_tox_ini = """
         pandas==1.5.0
         numpy<2.0
     commands =
-        pytest --no-cov --basetemp="{env_tmp_dir}" \
+        pytest --basetemp="{env_tmp_dir}" --no-cov \
             src/docplex_extensions/_pandas_accessors.py \
             tests/unit_tests/pandas_accessors \
             tests/functional_tests/multicommodity_test.py

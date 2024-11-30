@@ -57,6 +57,11 @@ dev = [
     "docplex-extensions[docs]",
 ]
 
+[project.urls]
+Documentation = "https://docplex-extensions.readthedocs.io/en/stable"
+"Source code" = "https://github.com/samarthmistry/docplex-extensions"
+Changelog = "https://github.com/samarthmistry/docplex-extensions/releases"
+
 [tool.setuptools.dynamic]
 version = { attr = "docplex_extensions.__version__" }
 

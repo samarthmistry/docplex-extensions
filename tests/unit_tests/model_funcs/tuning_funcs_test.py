@@ -24,6 +24,12 @@ def validate_tuning_logoutput_end(input: str) -> None:
     assert re.search(end_pattern, input) is not None
 
 
+@pytest.mark.parametrize('mdl', ['abc', 123, ('A', 'B')])
+def test_tune_mdl_typerr(mdl):
+    with pytest.raises(TypeError):
+        _ = tune(mdl, log_output=True)
+
+
 @pytest.mark.parametrize('log_output', [True, 'stdout', 'sys.stdout', '1'])
 def test_tune_logoutput_stdout_pass(capsys, mdl_to_tune, log_output):
     _ = tune(mdl_to_tune, log_output=log_output)

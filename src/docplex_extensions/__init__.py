@@ -24,6 +24,7 @@ from ._pandas_accessors import DataFrameAccessor as _DataFrameAccessor
 from ._pandas_accessors import IndexAccessor as _IndexAccessor
 from ._pandas_accessors import SeriesAccessor as _SeriesAccessor
 from ._param_dicts import ParamDict1D, ParamDictND
+from ._tuning_funcs import batch_tune, tune
 from ._var_dicts import VarDict1D, VarDictND
 from ._var_funcs import add_variable, add_variables
 
@@ -43,6 +44,8 @@ __all__ = [
     'print_problem_stats',
     'print_solution_quality_stats',
     'solve',
+    'tune',
+    'batch_tune',
     'IndexSet1D',
     'IndexSetND',
     'ParamDict1D',

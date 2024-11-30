@@ -98,13 +98,6 @@ def test_solve_solution_pass():
     assert sol1.to_string() == sol2.to_string()
 
 
-def test_solve_logoutput_true_pass(capsys, mdl, expected_log_start, expected_log_end):
-    _ = solve(mdl, log_output=True)
-    captured = capsys.readouterr().out
-
-    validate_logoutput(captured, expected_log_start % mdl.name, expected_log_end)
-
-
 def test_solve_logoutput_context_pass(capsys, mdl, expected_log_start, expected_log_end):
     mdl.context.solver.log_output = True
     _ = solve(mdl)
@@ -113,15 +106,17 @@ def test_solve_logoutput_context_pass(capsys, mdl, expected_log_start, expected_
     validate_logoutput(captured, expected_log_start % mdl.name, expected_log_end)
 
 
-def test_solve_logoutput_stdout_pass(capsys, mdl, expected_log_start, expected_log_end):
-    _ = solve(mdl, log_output='stdout')
+@pytest.mark.parametrize('log_output', [True, 'stdout', 'sys.stdout', '1'])
+def test_solve_logoutput_stdout_pass(capsys, mdl, log_output, expected_log_start, expected_log_end):
+    _ = solve(mdl, log_output=log_output)
     captured = capsys.readouterr().out
 
     validate_logoutput(captured, expected_log_start % mdl.name, expected_log_end)
 
 
-def test_solve_logoutput_stderr_pass(capsys, mdl, expected_log_start, expected_log_end):
-    _ = solve(mdl, log_output='stderr')
+@pytest.mark.parametrize('log_output', ['stderr', 'sys.stderr'])
+def test_solve_logoutput_stderr_pass(capsys, mdl, log_output, expected_log_start, expected_log_end):
+    _ = solve(mdl, log_output=log_output)
     captured = capsys.readouterr().err
 
     validate_logoutput(captured, expected_log_start % mdl.name, expected_log_end)
@@ -144,12 +139,9 @@ def test_solve_logoutput_fileobj_pass(tmp_path, mdl, expected_log_start, expecte
     validate_logoutput(captured, expected_log_start % mdl.name, expected_log_end)
 
 
-@pytest.mark.parametrize('config', ['log_output=False', 'no log_output'])
-def test_solve_logoutput_false_pass(capsys, mdl, config):
-    if config == 'log_output=False':
-        _ = solve(mdl, log_output=False)
-    if config == 'no log_output':
-        _ = solve(mdl)
+@pytest.mark.parametrize('log_output', [False, '0', None])
+def test_solve_logoutput_false_pass(capsys, mdl, log_output):
+    _ = solve(mdl, log_output=log_output)
 
     captured = capsys.readouterr()
     expected = ''

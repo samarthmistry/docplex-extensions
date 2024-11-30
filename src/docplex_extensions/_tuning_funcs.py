@@ -231,8 +231,8 @@ def _tune(
         status = cplex.parameters.tune_problem(param_set)
 
     improving_params_and_values = {}
-    # Cannot test since there's no deterministic way to test the tuning tool across multiple CPLEX
-    # versions
+    # Exclude from coverage since there's no clear way to deterministically test the tuning tool
+    # across multiple CPLEX versions. Also, it's not critial as it's only populating a dict.
     for param, param_value in cplex.parameters.get_changed():  # pragma: no cover
         param_name = get_name(param)
         if param_name not in fixed_params_and_values and param_name not in tuning_params:
@@ -252,10 +252,15 @@ def _tune(
 
         stream.write(log_footer)
         stream.flush()
+        try:
+            stream.custom_close()
+        except AttributeError:
+            pass
 
     # Post-tuning cleanup
     if batch_mode:
-        model.end()  # terminate the dummy model
+        # Terminate the dummy model
+        model.end()
     else:
         # Restore prior state
         model.log_output = prior_log_output

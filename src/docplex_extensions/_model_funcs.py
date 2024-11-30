@@ -59,9 +59,9 @@ def solve(model: Model, **kwargs: Any) -> SolveSolution | None:
     log_output : bool or str or stream object, optional
         Log output switch, in one of the following forms:
 
-        * ``True`` or ``'stdout'`` or ``'sys.stdout'``: Log is output to stdout.
+        * ``True`` or ``'1'`` or ``'stdout'`` or ``'sys.stdout'``: Log is output to stdout.
         * ``'stderr'`` or ``'sys.stderr'``: Log is output to stderr.
-        * ``False`` or ``None``: No log output.
+        * ``False`` or ``'0'`` or ``None``: No log output.
         * File path (in form of str): Log is output to the file.
         * Stream object (a file-like object with a write method and a flush method): Log is output
           to the stream object.
@@ -116,8 +116,9 @@ def solve(model: Model, **kwargs: Any) -> SolveSolution | None:
         out = model.context.solver.log_output_as_stream
     else:  # nothing otherwise
         out = False
+    to_log = out not in (False, '0', None)
 
-    if out:
+    if to_log:
         div_len = 85
         cplex = model.get_cplex()
 
@@ -135,13 +136,13 @@ def solve(model: Model, **kwargs: Any) -> SolveSolution | None:
         stream.write('\n' + '  CPLEX optimizer log  '.center(div_len, '-') + '\n\n')
 
     # Don't close the output stream; hand it over to `model.solve`
-    solve_setting = stream if out else None
+    solve_setting = stream if to_log else None
     # Remove if stream is in `kwargs` since we're handing it through an explicit argument
     kwargs.pop('log_output', None)
     # Invoke the actual method
     solution = model.solve(log_output=solve_setting, **kwargs)
 
-    if out:
+    if to_log:
         # `model.solve` auto-closes stream objects, so reopen
         if to_reopen:
             stream = open(stream._target.name, 'a')

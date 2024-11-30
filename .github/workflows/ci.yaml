@@ -64,14 +64,8 @@ jobs:
       - name: Check that docs can be built + Lint python docstrings with numpydoc (through Sphinx)
         # Will FAIL if Sphinx throws any warnings/errors or if any numpydoc lint rule is violated
         run: |
-            cd docs
-            make clean
-            make html
-            cd source
-            rm -rf auto_api/*
-            rm -rf auto_examples/*
-            cd ..
-            cd ..
+            make -C docs clean html
+            rm -rf docs/source/auto_api/* docs/source/auto_examples/*
 
       - name: Static type check with mypy
         # Will FAIL if any error is found

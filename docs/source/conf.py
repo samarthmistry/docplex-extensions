@@ -49,7 +49,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 sphinx_gallery_conf = {
     'examples_dirs': '../../examples',  # path to your example scripts
     'gallery_dirs': 'auto_examples',  # path to where to save gallery generated output
-    'filename_pattern': f'{re.escape(os.sep)}model_',
+    'filename_pattern': f'{re.escape(os.sep)}example_',
     'download_all_examples': False,
 }
 

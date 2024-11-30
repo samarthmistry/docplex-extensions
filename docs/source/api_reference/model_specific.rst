@@ -20,3 +20,14 @@ Solve with additional logging output
    :toctree: ../auto_api/
 
    solve
+
+-----------
+Tuning tool
+-----------
+.. currentmodule:: docplex_extensions._tuning_funcs
+
+.. autosummary::
+   :toctree: ../auto_api/
+
+   tune
+   batch_tune

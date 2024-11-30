@@ -79,7 +79,7 @@ jobs:
 
       - name: Generate coverage report from unit tests
         # Will FAIL if measured coverage is below 100%
-        run: pytest tests/unit_tests/ --cov=docplex_extensions --no-summary --cov-fail-under 100
+        run: pytest tests/unit_tests/ --no-summary --cov-fail-under 100
 
       - name: Generate badge file from coverage report
         uses: tj-actions/coverage-badge-py@v2

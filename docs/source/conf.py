@@ -53,7 +53,7 @@ sphinx_gallery_conf = {
         [
             '../../examples/model_building',
             '../../examples/evaluating_variability',
-            '../../examples/model_tuning',
+            '../../examples/parameter_tuning',
         ]
     ),  # sorting gallery subsections
     'gallery_dirs': 'auto_examples',  # path to where to save gallery generated output

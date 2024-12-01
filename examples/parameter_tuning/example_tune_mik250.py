@@ -3,12 +3,12 @@
 # the Apache Licence, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0).
 
 """
-======================
-Tune a batch of models
-======================
+==========================
+Tune for a batch of models
+==========================
 
-We will tune the instances `mik-250-20-75-1` & `mik-250-20-75-2` from MIPLIB 2010 using the
-`docplex-extensions` library.
+We will tune parameters for the instances `mik-250-20-75-1` & `mik-250-20-75-2`
+from MIPLIB 2010 using the `docplex-extensions` library.
 
 Reference:
 Koch, Thorsten, Tobias Achterberg, Erling Andersen, Oliver Bastert, Timo

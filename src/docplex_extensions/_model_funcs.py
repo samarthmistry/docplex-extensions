@@ -4,7 +4,8 @@
 
 """DOcplex model-specific funtions."""
 
-from typing import Any
+from io import TextIOBase
+from typing import Any, Literal, TextIO
 
 from docplex.mp.model import Model
 from docplex.mp.solution import SolveSolution
@@ -160,3 +161,76 @@ def solve(model: Model, **kwargs: Any) -> SolveSolution | None:
             stream.close()
 
     return solution
+
+
+def runseeds(
+    model: Model,
+    count: int = 30,
+    log_output: Literal[True] | str | TextIO = True,
+) -> None:
+    """Evaluate variability of a mixed-integer DOcplex model by solving with different random seeds.
+
+    This function is a wrapper around CPLEX's `runseeds` procedure. Refer to the CPLEX user manual
+    for more details about this functionality.
+
+    Parameters
+    ----------
+    model : docplex.mp.model.Model
+        DOcplex model.
+    count : int
+        The number of times to solve the model, be default `30` (same as CPLEX).
+    log_output : True or str or stream object, optional
+        Log output switch, in one of the following forms:
+
+        * ``True`` or ``'1'`` or ``'stdout'`` or ``'sys.stdout'``: Log is output to stdout.
+        * ``'stderr'`` or ``'sys.stderr'``: Log is output to stderr.
+        * File path (in form of str): Log is output to the file.
+        * Stream object (a file-like object with a write method and a flush method): Log is output
+          to the stream object.
+
+        Default is True.
+
+    Raises
+    ------
+    ValueError
+        If the problem type is not mixed-integer (MILP, MIQP, MIQCP).
+    """
+    if not isinstance(model, Model):
+        raise TypeError('`model` should be docplex.mp.model.Model')
+    if model.problem_type not in ('MILP', 'MIQP', 'MIQCP'):
+        raise ValueError('runseeds only supports mixed-integer problem types (MILP, MIQP, MIQCP)')
+
+    if not isinstance(count, int) or count < 1:
+        raise ValueError('count should be a positive integer')
+
+    if log_output in (False, '0', None):
+        raise ValueError('`log_output` should be a True or str or stream object')
+    elif log_output == '1':
+        log_output = True
+    if not (
+        log_output is True
+        or isinstance(log_output, str | TextIOBase)
+        or (hasattr(log_output, 'write') and hasattr(log_output, 'flush'))
+    ):
+        raise TypeError('`log_output` should be a True or str or stream object')
+
+    # Register prior state so it can be restored at the end
+    prior_log_output = model.log_output
+
+    # Set log_output stream
+    model.log_output = log_output
+    stream = model.context.solver.log_output_as_stream
+
+    # Invoke the runseeds procedure
+    model.apply_parameters()
+    cplex = model.get_cplex()
+    cplex.runseeds(cnt=count)
+
+    # Close stream if it's a file created by DOcplex (when log_output='filepath')
+    try:
+        stream.custom_close()
+    except AttributeError:
+        pass
+
+    # Restore prior state
+    model.log_output = prior_log_output

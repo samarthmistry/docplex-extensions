@@ -19,7 +19,7 @@ if _find_spec('docplex') is None:
 
 # Package functionality
 from ._index_sets import IndexSet1D, IndexSetND
-from ._model_funcs import print_problem_stats, print_solution_quality_stats, solve
+from ._model_funcs import print_problem_stats, print_solution_quality_stats, runseeds, solve
 from ._pandas_accessors import DataFrameAccessor as _DataFrameAccessor
 from ._pandas_accessors import IndexAccessor as _IndexAccessor
 from ._pandas_accessors import SeriesAccessor as _SeriesAccessor
@@ -46,6 +46,7 @@ __all__ = [
     'solve',
     'tune',
     'batch_tune',
+    'runseeds',
     'IndexSet1D',
     'IndexSetND',
     'ParamDict1D',

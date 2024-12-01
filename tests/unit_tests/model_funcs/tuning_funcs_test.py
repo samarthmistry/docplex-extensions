@@ -24,6 +24,12 @@ def validate_tuning_logoutput_end(input: str) -> None:
     assert re.search(end_pattern, input) is not None
 
 
+@pytest.mark.parametrize('mdl', ['abc', 123, ('A', 'B')])
+def test_tune_mdl_typerr(mdl):
+    with pytest.raises(TypeError):
+        _ = tune(mdl, log_output=True)
+
+
 @pytest.mark.parametrize('log_output', [True, 'stdout', 'sys.stdout', '1'])
 def test_tune_logoutput_stdout_pass(capsys, mdl_to_tune, log_output):
     _ = tune(mdl_to_tune, log_output=log_output)
@@ -336,3 +342,51 @@ def test_batchtune_fixed_valerr1(files_to_tune):
 def test_batchtune_fixed_valerr2(files_to_tune):
     with pytest.raises(ValueError):
         _ = batch_tune(*files_to_tune, log_output=True, fixed_params_and_values={'threads': -1})
+
+
+@pytest.mark.parametrize(
+    'input, func',
+    [
+        (True, 'stderr'),
+        ('1', 'stderr'),
+        ('stdout', 'stderr'),
+        ('sys.stdout', 'stderr'),
+        ('stderr', 'stdout'),
+        ('sys.stderr', 'stdout'),
+        ('file', 'stdout'),
+        (None, 'stdout'),
+        (False, 'stdout'),
+        ('0', 'stdout'),
+    ],
+)
+def test_tune_persist_lo(tmp_path, mdl_to_tune, input, func):
+    if input == 'file':
+        prior = (tmp_path / 'file.log').open('w+')
+    else:
+        prior = input
+
+    mdl_to_tune.log_output = prior
+    prior_log_output = mdl_to_tune.log_output
+
+    _ = tune(mdl_to_tune, log_output=func)
+
+    assert mdl_to_tune.log_output is prior_log_output
+
+
+def test_tune_persist_params(mdl_to_tune):
+    mdl_to_tune.parameters.threads = 32
+    mdl_to_tune.parameters.timelimit = 600
+    mdl_to_tune.parameters.lpmethod = 4
+    prior_params = {
+        param.qualified_name: param.get()
+        for param in mdl_to_tune.parameters.generate_nondefault_params()
+    }
+
+    _ = tune(mdl_to_tune)
+
+    post_params = {
+        param.qualified_name: param.get()
+        for param in mdl_to_tune.parameters.generate_nondefault_params()
+    }
+
+    assert prior_params == post_params

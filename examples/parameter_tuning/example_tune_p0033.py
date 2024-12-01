@@ -3,12 +3,12 @@
 # the Apache Licence, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0).
 
 """
-====================
-Tune a DOcplex model
-====================
+========================
+Tune for a DOcplex model
+========================
 
-We will tune the instance `p0033` from MIPLIB 3.0 using the `docplex-extensions`
-library.
+We will tune parameters for the instance `p0033` from MIPLIB 3.0 using the
+`docplex-extensions` library.
 
 Reference:
 Bixby, Robert E., Sebastian Ceria, Cassandra M. McZeal, and Martin WP

@@ -354,6 +354,9 @@ def tune(
     -----
     Any CPLEX parameters set for the model before passing it to this function will be disregarded.
     """
+    if not isinstance(model, Model):
+        raise TypeError('`model` should be docplex.mp.model.Model')
+
     return _tune(
         model,
         log_output=log_output,

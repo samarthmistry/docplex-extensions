@@ -2,6 +2,6 @@
 Model building
 --------------
 
-We take some examples from the `AMPL Book <https://ampl.com/learn/ampl-book/>`_
-and illustrate how to implement them with DOcplex using the `docplex-extensions`
-library.
+We demonstrate how to implement examples from the `AMPL Book
+<https://ampl.com/learn/ampl-book/>`_ using functionality from the
+`docplex-extensions` library.

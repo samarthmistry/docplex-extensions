@@ -15,14 +15,15 @@ Features
   decision variables — enabling concise and high-performance algebraic modeling.
 * **Easy access to additional CPLEX functionality**: Like `tuning tool <https://
   www.ibm.com/docs/en/icos/latest?topic=programmingconsiderations-tuning-
-  tool>`_, `displaying problem statistics <https://www.ibm.com/docs/en/icos/
-  latest?topic=problem-displaying-statistics>`_ and `displaying solution quality
-  statistics <https://www.ibm.com/docs/en/icos/latest?topic=cplex-evaluating-
-  solution-quality>`_ — not directly available in DOcplex.
+  tool>`_, `runseeds <https://www.ibm.com/docs/en/icos/latest?topic=cplex-
+  evaluating-variability>`_, `displaying problem statistics <https://www.ibm.com/
+  docs/en/icos/latest?topic=problem-displaying-statistics>`_ and `displaying
+  solution quality statistics <https://www.ibm.com/docs/en/icos/latest?topic=
+  cplex-evaluating-solution-quality>`_ — not directly available in DOcplex.
 * **Type-complete interface**: Enables static type checking and intelligent
   auto-completion suggestions with modern IDEs — reducing type errors and
   improving development speed.
-* **Robust codebase**: 100% coverage spanning 1600+ curated test cases and
+* **Robust codebase**: 100% coverage spanning 1700+ curated test cases and
   fully type-checked with mypy under `strict mode <https://
   mypy.readthedocs.io/en/stable/getting_started.html
   #strict-mode-and-configuration>`_.

@@ -127,3 +127,23 @@ def files_to_tune():
 
     os.remove(mdl1_path)
     os.remove(mdl2_path)
+
+
+@pytest.fixture(scope='module')
+def rs_mdl():
+    mdl = Model(name='dummy', checker='off', ignore_names=True)
+    desk = mdl.integer_var(name='desk')
+    cell = mdl.integer_var(name='cell')
+    mdl.add_constraints_(
+        [
+            desk >= 100,
+            cell >= 100,
+            0.2 * desk + 0.4 * cell <= 400,
+            0.5 * desk + 0.4 * cell <= 490,
+        ]
+    )
+    mdl.maximize(12 * desk + 20 * cell)
+
+    yield mdl
+
+    mdl.end()

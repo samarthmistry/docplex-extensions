@@ -12,6 +12,7 @@ import sys
 from datetime import datetime
 
 import sphinx_autosummary_accessors
+from sphinx_gallery.sorting import ExplicitOrder
 
 from docplex_extensions import __version__
 
@@ -48,6 +49,13 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # path to the examples scripts
 sphinx_gallery_conf = {
     'examples_dirs': '../../examples',  # path to your example scripts
+    'subsection_order': ExplicitOrder(
+        [
+            '../../examples/model_building',
+            '../../examples/evaluating_variability',
+            '../../examples/model_tuning',
+        ]
+    ),  # sorting gallery subsections
     'gallery_dirs': 'auto_examples',  # path to where to save gallery generated output
     'filename_pattern': f'{re.escape(os.sep)}example_',
     'download_all_examples': False,

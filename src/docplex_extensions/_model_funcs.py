@@ -194,6 +194,8 @@ def runseeds(
     ------
     ValueError
         If the problem type is not mixed-integer (MILP, MIQP, MIQCP).
+    ValueError
+        If count is not a positive number.
     """
     if not isinstance(model, Model):
         raise TypeError('`model` should be docplex.mp.model.Model')

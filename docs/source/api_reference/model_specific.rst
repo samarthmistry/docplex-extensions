@@ -21,6 +21,14 @@ Solve with additional logging output
 
    solve
 
+--------------------
+Evaluate variability
+--------------------
+.. autosummary::
+   :toctree: ../auto_api/
+
+   runseeds
+
 -----------
 Tuning tool
 -----------

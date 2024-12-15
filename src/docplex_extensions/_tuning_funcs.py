@@ -264,6 +264,8 @@ def _tune(
     else:
         # Restore prior state
         model.log_output = prior_log_output
+        for tuning_param_name in tuning_params:
+            attrgetter(tuning_param_name)(model.parameters).reset()
         for prior_name, prior_val in prior_params.items():
             attrgetter(prior_name)(model.parameters).set(prior_val)
         model.apply_parameters()

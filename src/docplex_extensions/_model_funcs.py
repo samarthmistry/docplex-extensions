@@ -170,15 +170,16 @@ def runseeds(
 ) -> None:
     """Evaluate variability of a mixed-integer DOcplex model by solving with different random seeds.
 
-    This function is a wrapper around CPLEX's `runseeds` procedure. Refer to the CPLEX user manual
-    for more details about this functionality.
+    This function is a wrapper around CPLEX's `runseeds` procedure that reports variability
+    statistics in the output log. Refer to the CPLEX user manual for more details about this
+    functionality.
 
     Parameters
     ----------
     model : docplex.mp.model.Model
         DOcplex model.
     count : int
-        The number of times to solve the model, be default `30` (same as CPLEX).
+        The number of times to solve the model, by default `30` (same as CPLEX).
     log_output : True or str or stream object, optional
         Log output switch, in one of the following forms:
 
@@ -193,20 +194,20 @@ def runseeds(
     Raises
     ------
     ValueError
-        If the problem type is not mixed-integer (MILP, MIQP, MIQCP).
+        If the DOcplex model is not mixed-integer (MILP, MIQP, MIQCP).
     ValueError
         If count is not a positive number.
     """
     if not isinstance(model, Model):
         raise TypeError('`model` should be docplex.mp.model.Model')
     if model.problem_type not in ('MILP', 'MIQP', 'MIQCP'):
-        raise ValueError('runseeds only supports mixed-integer problem types (MILP, MIQP, MIQCP)')
+        raise ValueError('runseeds only supports mixed-integer DOcplex models (MILP, MIQP, MIQCP)')
 
     if not isinstance(count, int) or count < 1:
-        raise ValueError('count should be a positive integer')
+        raise ValueError('`count` should be a positive integer')
 
     if log_output in (False, '0', None):
-        raise ValueError('`log_output` should be a True or str or stream object')
+        raise ValueError('`log_output` should be True or str or a stream object')
     elif log_output == '1':
         log_output = True
     if not (
@@ -214,7 +215,7 @@ def runseeds(
         or isinstance(log_output, str | TextIOBase)
         or (hasattr(log_output, 'write') and hasattr(log_output, 'flush'))
     ):
-        raise TypeError('`log_output` should be a True or str or stream object')
+        raise TypeError('`log_output` should be True or str or a stream object')
 
     # Register prior state so it can be restored at the end
     prior_log_output = model.log_output

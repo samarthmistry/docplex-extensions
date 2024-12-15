@@ -373,7 +373,8 @@ def test_tune_persist_lo(tmp_path, mdl_to_tune, input, func):
     assert mdl_to_tune.log_output is prior_log_output
 
 
-def test_tune_persist_params(mdl_to_tune):
+@pytest.mark.parametrize('tune_kwargs', [{}, {'tuning_timelimit_sec': 10, 'repeat': 3}])
+def test_tune_persist_params(mdl_to_tune, tune_kwargs):
     mdl_to_tune.parameters.threads = 32
     mdl_to_tune.parameters.timelimit = 600
     mdl_to_tune.parameters.lpmethod = 4
@@ -382,7 +383,7 @@ def test_tune_persist_params(mdl_to_tune):
         for param in mdl_to_tune.parameters.generate_nondefault_params()
     }
 
-    _ = tune(mdl_to_tune)
+    _ = tune(mdl_to_tune, **tune_kwargs)
 
     post_params = {
         param.qualified_name: param.get()

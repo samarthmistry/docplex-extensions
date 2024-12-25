@@ -32,7 +32,7 @@ Features
 Documentation
 -------------
 
-.. grid:: 3
+.. grid:: 4
 
    .. grid-item-card:: Installation
        :link: installation/index
@@ -58,6 +58,13 @@ Documentation
 
        :material-regular:`computer;2em`
 
+   .. grid-item-card:: Changelog
+       :link: https://github.com/samarthmistry/docplex-extensions/releases
+       :text-align: center
+       :margin: 2 auto auto auto
+
+       :material-regular:`track_changes;2em`
+
 .. toctree::
    :hidden:
    :maxdepth: 1
@@ -65,6 +72,7 @@ Documentation
    installation/index
    api_reference/index
    auto_examples/index
+   Changelog <https://github.com/samarthmistry/docplex-extensions/releases>
 
 -------
 License

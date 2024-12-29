@@ -193,23 +193,24 @@ legacy_tox_ini = """
         3.13 = py313
 
     [testenv]
-    description = Run doctests, unit tests, functional tests, and typing tests
+    description = Run doctests, unit tests, and functional tests
     setenv = PY_IGNORE_IMPORTMISMATCH=1
     extras =
         tests
         cplex-runtime
     package = wheel
+    wheel_build_env = .pkg
     commands =
         pytest --basetemp="{env_tmp_dir}"
 
     [testenv:mypy]
-    description = Run doctests, unit tests, functional tests, and typing tests
+    description = Run static type checks and typing tests
     setenv = PY_IGNORE_IMPORTMISMATCH=1
     extras = tests
     package = wheel
     commands =
         mypy src
-        mypy ./tests/typing_tests/
+        mypy tests/typing_tests
 
     [testenv:py{312,313}]
     # Since CPLEX runtime is not supported beyond python 3.11, we skip all runtime-based tests

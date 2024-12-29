@@ -968,6 +968,70 @@ class IndexSetND(IndexSetBase[ElemNDT]):
         p.text(f'{self._get_repr_header()}\n')
         p.pretty(self._list)
 
+    def __le__(self, other: Self | tuple[IndexSet1D[Any], ...], /) -> bool:
+        """Rich comparsion method as a subset check: self <= other.
+
+        Parameters
+        ----------
+        other : IndexSetND or tuple[IndexSet1D, ...]
+
+        Returns
+        -------
+        bool
+
+        Raises
+        ------
+        TypeError
+            If checked with an object that's not IndexSetND or a tuple of IndexSet1D
+        LookupError
+            If the IndexSetND is empty and checked with a tuple of IndexSet1D
+        ValueError
+            If checked with a tuple of IndexSet1D that is not the same length as the elements of
+            the IndexSetND
+
+        Examples
+        --------
+        >>> vals = IndexSet1D(range(10))
+        >>> all_combinations = IndexSetND(vals, vals)
+        >>> sparse_combinations = IndexSetND([(0, 0), (1, 4), (3, 1), (9, 6), (9, 9)])
+
+        Direct subset check with another IndexSetND
+
+        >>> sparse_combinations <= all_combinations
+        True
+
+        Subset check with a tuple of two IndexSet1D
+
+        >>> sparse_combinations <= (vals, vals)
+        True
+
+        >>> fewer_vals = IndexSet1D(range(4))
+        >>> sparse_combinations <= (fewer_vals, fewer_vals)
+        False
+        """
+        if isinstance(other, self.__class__):
+            return self._set <= other._set
+
+        elif isinstance(other, tuple) and all(isinstance(x, IndexSet1D) for x in other):
+            if not self:  # not populated
+                raise LookupError(f'{self.__class__.__name__} is empty')
+            if self._tuplelen != len(other):
+                raise ValueError(
+                    'tuple of IndexSet1D must be of the same length as the elements of '
+                    f'{self.__class__.__name__}'
+                )
+            for i, vals in enumerate(other):
+                if self.squeeze(i) <= vals:  # 1-dim subset check
+                    continue
+                else:
+                    return False
+            return True
+
+        else:
+            raise TypeError(
+                f'`<=` is only supported with {self.__class__.__name__} or a tuple of IndexSet1D'
+            )
+
     @staticmethod
     def _flatten(iterable: Iterable[Any]) -> Iterable[Any]:
         """Recursively flatten a nested iterable.

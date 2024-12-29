@@ -69,7 +69,7 @@ html_short_title = html_title = 'docplex-extensions documentation'
 html_theme = 'ansys_sphinx_theme'
 html_static_path = ['_static']
 html_favicon = os.path.abspath('_static/favicon.png')
-html_sidebars = {'installation/*': [], 'user_guide/*': []}
+html_sidebars = {'installation/*': []}
 html_context = {
     'github_user': 'samarthmistry',
     'github_repo': 'docplex-extensions',

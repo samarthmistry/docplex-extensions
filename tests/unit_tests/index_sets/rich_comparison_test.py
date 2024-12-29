@@ -8,6 +8,8 @@ from copy import deepcopy
 
 import pytest
 
+from docplex_extensions import IndexSet1D
+
 
 @pytest.mark.parametrize(
     '_left, _right',
@@ -208,3 +210,61 @@ def test_set_sym_opr_invalid(request, _left, sym_opr, right):
     left = request.getfixturevalue(_left)
     with pytest.raises(TypeError):
         getattr(left, sym_opr)(right)
+
+
+@pytest.mark.parametrize(
+    '_left, right',
+    [
+        ('setNd_0', (IndexSet1D([0, 1]), IndexSet1D([0, 1]))),
+        ('setNd_01', (IndexSet1D([0, 1]), IndexSet1D([0, 1]))),
+        ('setNd_012', (IndexSet1D([0, 1]), IndexSet1D([0, 1, 2]))),
+        ('setNd_0', (IndexSet1D([0]), IndexSet1D([0, 1]))),
+        ('setNd_012', (IndexSet1D([0]), IndexSet1D([0, 1, 2]))),
+        ('setNd_int_cmb2', (IndexSet1D([0, 1]), IndexSet1D([0, 1]))),
+        ('setNd_int_cmb2', (IndexSet1D(range(9)), IndexSet1D(range(9)))),
+    ],
+)
+def test_set_is_le_sparse(request, _left, right):
+    left = request.getfixturevalue(_left)
+    assert left <= right
+
+
+@pytest.mark.parametrize(
+    '_left, right',
+    [
+        ('setNd_01', (IndexSet1D([0, 1]), IndexSet1D([0]))),
+        ('setNd_012', (IndexSet1D([0, 1]), IndexSet1D([0, 1]))),
+        ('setNd_int_cmb3', (IndexSet1D([0]), IndexSet1D([0]), IndexSet1D([0]))),
+        ('setNd_int_cmb3', (IndexSet1D([0]), IndexSet1D([0, 1]), IndexSet1D([0]))),
+    ],
+)
+def test_set_not_le_sparse(request, _left, right):
+    left = request.getfixturevalue(_left)
+    assert not left <= right
+
+
+@pytest.mark.parametrize(
+    '_left, right',
+    [
+        ('setNd_01', (IndexSet1D([0, 1]),)),
+        ('setNd_01', (IndexSet1D([0, 1]), IndexSet1D([0, 1]), IndexSet1D([0, 1]))),
+    ],
+)
+def test_set_is_le_sparse_len_valerr(request, _left, right):
+    left = request.getfixturevalue(_left)
+    with pytest.raises(ValueError):
+        _ = left <= right
+
+
+@pytest.mark.parametrize(
+    '_left, right',
+    [
+        ('setNd_emp', (IndexSet1D([0, 1]),)),
+        ('setNd_emp', (IndexSet1D([0, 1]), IndexSet1D([0, 1]))),
+        ('setNd_emp', (IndexSet1D([0, 1]), IndexSet1D([0, 1]), IndexSet1D([0, 1]))),
+    ],
+)
+def test_set_is_le_sparse_emp_lkperr(request, _left, right):
+    left = request.getfixturevalue(_left)
+    with pytest.raises(LookupError):
+        _ = left <= right

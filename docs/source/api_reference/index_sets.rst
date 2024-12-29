@@ -23,6 +23,33 @@ Attributes
 
    IndexSet1D.name
 
+Set comparison
+--------------
+
+* If two sets have the same elements:
+
+   >>> set_a == set_b
+
+* If two sets have different elements:
+
+   >>> set_a != set_b
+
+* If one set is a subset of another:
+
+   >>> set_a <= set_b
+
+* If one set is a proper subset of another:
+
+   >>> set_a < set_b
+
+* If one set is a superset of another:
+
+   >>> set_a >= set_b
+
+* If one set is a proper superset of another:
+
+   >>> set_a > set_b
+
 Sequence operations
 -------------------
 .. autosummary::
@@ -48,12 +75,6 @@ Dunder methods
 - ``IndexSet1D.__delitem__``
 - ``IndexSet1D.__add__``
 - ``IndexSet1D.__iadd__``
-- ``IndexSet1D.__lt__``
-- ``IndexSet1D.__le__``
-- ``IndexSet1D.__eq__``
-- ``IndexSet1D.__ne__``
-- ``IndexSet1D.__gt__``
-- ``IndexSet1D.__ge__``
 
 ----------
 IndexSetND
@@ -81,6 +102,52 @@ Efficient subset selection
    IndexSetND.subset
    IndexSetND.squeeze
 
+Set comparison
+--------------
+
+* If two sets have the same elements:
+
+  >>> set_a == set_b
+
+* If two sets have different elements:
+
+   >>> set_a != set_b
+
+* If one set is a subset of another:
+
+   >>> set_a <= set_b
+
+   *A more efficient approach for sparse sets:*
+
+   If ``set_a`` is a 3-dim set (of type IndexSetND) and is composed of sparse
+   combinations of elements of three 1-dim sets ``set_x``, ``set_y``, and
+   ``set_z`` respectively (each of type IndexSet1D). Then an efficient subset
+   check for ``set_a`` can be directly made with a tuple of ``set_x``, ``set_y``,
+   and ``set_z`` – without having to enumerate all possible combinations from
+   the three.
+
+   >>> set_a <= (set_x, set_y, set_z)
+
+   Can raise the following errors:
+
+   * ``LookupError``: If the IndexSetND is empty and checked with a tuple of
+     IndexSet1D.
+
+   * ``ValueError``: If the IndexSetND is checked with a tuple of IndexSet1D that
+     is not the same length as the elements of the IndexSetND.
+
+* If one set is a proper subset of another:
+
+   >>> set_a < set_b
+
+* If one set is a superset of another:
+
+   >>> set_a >= set_b
+
+* If one set is a proper superset of another:
+
+   >>> set_a > set_b
+
 Sequence operations
 -------------------
 .. autosummary::
@@ -106,12 +173,6 @@ Dunder methods
 - ``IndexSetND.__delitem__``
 - ``IndexSetND.__add__``
 - ``IndexSetND.__iadd__``
-- ``IndexSetND.__lt__``
-- ``IndexSetND.__le__``
-- ``IndexSetND.__eq__``
-- ``IndexSetND.__ne__``
-- ``IndexSetND.__gt__``
-- ``IndexSetND.__ge__``
 
 ------------------------------------------
 Casting from pandas Series/DataFrame/Index

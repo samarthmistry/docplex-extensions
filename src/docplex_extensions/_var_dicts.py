@@ -12,6 +12,7 @@ from typing import Any, Literal, NoReturn, TypeVar, cast, overload
 from docplex.mp.dvar import Var
 from docplex.mp.linear import LinearExpr, ZeroExpr
 from docplex.mp.model import Model
+from docplex.mp.vartype import VarType
 
 from ._dict_mixins import DefaultT, Dict1DMixin, DictBaseMixin, DictNDMixin
 from ._index_sets import Elem1DT, ElemNDT, ElemT, IndexSet1D, IndexSetBase, IndexSetND
@@ -32,21 +33,27 @@ class VarDictBase(dict[ElemT, VarT], DictBaseMixin[ElemT, VarT]):
         Dictionary of variable objects from docplex.
     indexset : IndexSetBase
         Keys of dictionary encapsulated in an IndexSet.
-    model : docplex.mp.Model
+    model : docplex.mp.model.Model
         DOcplex model associated with the variable objects.
+    vartype : docplex.mp.vartype.VarType
+        DOcplex VarType corresponding to the variable objects.
     """
 
     # Private attributes
     # ------------------
     # _indexset : IndexSetBase
     #     Index-set of keys.
-    # _model : docplex.mp.model.Model
-    #     DOcplex model.
 
-    __slots__ = ('_indexset', '_model')
+    __slots__ = ('_indexset', '_model', '_vartype')
 
     def __init__(
-        self, docpx_var_dict: dict[ElemT, VarT], /, *, indexset: IndexSetBase[ElemT], model: Model
+        self,
+        docpx_var_dict: dict[ElemT, VarT],
+        /,
+        *,
+        indexset: IndexSetBase[ElemT],
+        model: Model,
+        vartype: VarType,
     ) -> None:
         self._validate_docpx_var_dict(docpx_var_dict)
 
@@ -60,9 +67,29 @@ class VarDictBase(dict[ElemT, VarT], DictBaseMixin[ElemT, VarT]):
         """Index-set of keys."""
 
         self._model = model
-        """DOcplex model."""
+        self._vartype = vartype
 
         super().__init__(docpx_var_dict)
+
+    @property
+    def model(self) -> Model:
+        """DOcplex model associated with the variables.
+
+        Returns
+        -------
+        docplex.mp.model.Model
+        """
+        return self._model
+
+    @property
+    def vartype(self) -> VarType:
+        """DOcplex VarType corresponding to the variables.
+
+        Returns
+        -------
+        DOcplex variable type (subclass of docplex.mp.vartype.VarType)
+        """
+        return self._vartype
 
     @staticmethod
     def _validate_docpx_var_dict(docpx_var_dict: dict[ElemT, VarT]) -> None:
@@ -147,8 +174,10 @@ class VarDict1D(VarDictBase[Elem1DT, VarT], Dict1DMixin[Elem1DT, VarT]):
         Dictionary of variable objects from docplex.
     indexset : IndexSet1D
         Keys of dictionary encapsulated in IndexSet1D.
-    model : docplex.mp.Model
+    model : docplex.mp.model.Model
         DOcplex model associated with the variable objects.
+    vartype : docplex.mp.vartype.VarType
+        DOcplex VarType corresponding to the variable objects.
     value_name : str, optional
         Name to refer to variables - not used internally, and solely for user reference.
     """
@@ -157,8 +186,6 @@ class VarDict1D(VarDictBase[Elem1DT, VarT], Dict1DMixin[Elem1DT, VarT]):
     # ------------------
     # _indexset : IndexSet1D
     #     Index-set of keys.
-    # _model : docplex.mp.model.Model
-    #     DOcplex model.
 
     __slots__ = ('_key_name', '_value_name')
 
@@ -169,12 +196,13 @@ class VarDict1D(VarDictBase[Elem1DT, VarT], Dict1DMixin[Elem1DT, VarT]):
         /,
         *,
         model: Model,
+        vartype: VarType,
         value_name: str | None = None,
     ) -> None:
         self.key_name = indexset.name
         self.value_name = value_name
 
-        super().__init__(docpx_var_dict, indexset=indexset, model=model)
+        super().__init__(docpx_var_dict, indexset=indexset, model=model, vartype=vartype)
 
     def __new__(
         cls,
@@ -183,6 +211,7 @@ class VarDict1D(VarDictBase[Elem1DT, VarT], Dict1DMixin[Elem1DT, VarT]):
         /,
         *,
         model: Model,
+        vartype: VarType,
         value_name: str | None = None,
     ) -> VarDict1D[Elem1DT, VarT]:
         raise TypeError(
@@ -198,11 +227,14 @@ class VarDict1D(VarDictBase[Elem1DT, VarT], Dict1DMixin[Elem1DT, VarT]):
         /,
         *,
         model: Model,
+        vartype: VarType,
         value_name: str | None = None,
     ) -> VarDict1D[Elem1DT, VarT]:
         # Private method to construt VarDict1D
         instance = super().__new__(cls)
-        cls.__init__(instance, docpx_var_dict, indexset, model=model, value_name=value_name)
+        cls.__init__(
+            instance, docpx_var_dict, indexset, model=model, vartype=vartype, value_name=value_name
+        )
         return instance
 
     def __repr__(self) -> str:
@@ -282,7 +314,7 @@ class VarDict1D(VarDictBase[Elem1DT, VarT], Dict1DMixin[Elem1DT, VarT]):
         >>> node_select.sum()
         docplex.mp.LinearExpr(node-select_A+node-select_B+node-select_C)
         """
-        return self._model.sum_vars_all_different(self.values())
+        return self.model.sum_vars_all_different(self.values())
 
 
 class VarDictND(VarDictBase[ElemNDT, VarT], DictNDMixin[ElemNDT, VarT]):
@@ -294,8 +326,10 @@ class VarDictND(VarDictBase[ElemNDT, VarT], DictNDMixin[ElemNDT, VarT]):
         Dictionary of variable objects from docplex.
     indexset : IndexSetND
         Keys of dictionary encapsulated in IndexSetND.
-    model : docplex.mp.Model
+    model : docplex.mp.model.Model
         DOcplex model associated with the variable objects.
+    vartype : docplex.mp.vartype.VarType
+        DOcplex VarType corresponding to the variable objects.
     value_name : str, optional
         Name to refer to variables - not used internally, and solely for user reference.
     """
@@ -304,8 +338,6 @@ class VarDictND(VarDictBase[ElemNDT, VarT], DictNDMixin[ElemNDT, VarT]):
     # ------------------
     # _indexset : IndexSetND
     #     Index-set of keys.
-    # _model : docplex.mp.model.Model
-    #     DOcplex model.
 
     __slots__ = ('_key_names', '_value_name')
 
@@ -316,12 +348,13 @@ class VarDictND(VarDictBase[ElemNDT, VarT], DictNDMixin[ElemNDT, VarT]):
         /,
         *,
         model: Model,
+        vartype: VarType,
         value_name: str | None = None,
     ) -> None:
         self.key_names = indexset.names
         self.value_name = value_name
 
-        super().__init__(docpx_var_dict, indexset=indexset, model=model)
+        super().__init__(docpx_var_dict, indexset=indexset, model=model, vartype=vartype)
 
     def __new__(
         cls,
@@ -330,6 +363,7 @@ class VarDictND(VarDictBase[ElemNDT, VarT], DictNDMixin[ElemNDT, VarT]):
         /,
         *,
         model: Model,
+        vartype: VarType,
         value_name: str | None = None,
     ) -> VarDictND[ElemNDT, VarT]:
         raise TypeError(
@@ -345,11 +379,14 @@ class VarDictND(VarDictBase[ElemNDT, VarT], DictNDMixin[ElemNDT, VarT]):
         /,
         *,
         model: Model,
+        vartype: VarType,
         value_name: str | None = None,
     ) -> VarDictND[ElemNDT, VarT]:
         # Private method to construt VarDictND
         instance = super().__new__(cls)
-        cls.__init__(instance, docpx_var_dict, indexset, model=model, value_name=value_name)
+        cls.__init__(
+            instance, docpx_var_dict, indexset, model=model, vartype=vartype, value_name=value_name
+        )
         return instance
 
     def __repr__(self) -> str:
@@ -460,5 +497,5 @@ class VarDictND(VarDictBase[ElemNDT, VarT], DictNDMixin[ElemNDT, VarT]):
         docplex.mp.ZeroExpr()
         """
         if pattern:
-            return self._model.sum_vars_all_different(self._get_matching_values(*pattern))
-        return self._model.sum_vars_all_different(self.values())
+            return self.model.sum_vars_all_different(self._get_matching_values(*pattern))
+        return self.model.sum_vars_all_different(self.values())

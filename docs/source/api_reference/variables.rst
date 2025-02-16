@@ -31,6 +31,8 @@ Attributes
 ----------
 .. autosummary::
 
+   VarDict1D.model
+   VarDict1D.vartype
    VarDict1D.key_name
    VarDict1D.value_name
 
@@ -69,6 +71,8 @@ Attributes
 ----------
 .. autosummary::
 
+   VarDictND.model
+   VarDictND.vartype
    VarDictND.key_names
    VarDictND.value_name
 

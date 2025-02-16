@@ -569,5 +569,9 @@ def add_variables(
     value_name = name if isinstance(name, str) else None
 
     if isinstance(indexset, IndexSet1D):
-        return VarDict1D._create(docpx_var_dict, indexset, model=model, value_name=value_name)
-    return VarDictND._create(docpx_var_dict, indexset, model=model, value_name=value_name)
+        return VarDict1D._create(
+            docpx_var_dict, indexset, model=model, vartype=vt, value_name=value_name
+        )
+    return VarDictND._create(
+        docpx_var_dict, indexset, model=model, vartype=vt, value_name=value_name
+    )

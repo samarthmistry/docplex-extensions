@@ -21,7 +21,7 @@ from docplex_extensions import IndexSet1D, IndexSetND, VarDict1D, VarDictND, add
 def test_vardict_init_typerr0(mdl_1, cls, indexset):
     docpx_vars = mdl_1.continuous_var_dict(indexset)
     with pytest.raises(TypeError):
-        cls(docpx_vars, indexset, model=mdl_1)
+        cls(docpx_vars, indexset, model=mdl_1, vartype=mdl_1.continuous_vartype)
 
 
 @pytest.mark.parametrize(
@@ -34,7 +34,7 @@ def test_vardict_init_typerr0(mdl_1, cls, indexset):
 @pytest.mark.parametrize('vardict', [0, int, [1, 2], 'A'])
 def test_vardict_init_typerr1(mdl_1, cls, indexset, vardict):
     with pytest.raises(TypeError):
-        cls._create(vardict, indexset, model=mdl_1)
+        cls._create(vardict, indexset, model=mdl_1, vartype=mdl_1.continuous_vartype)
 
 
 @pytest.mark.parametrize(
@@ -46,7 +46,7 @@ def test_vardict_init_typerr1(mdl_1, cls, indexset, vardict):
 )
 def test_vardict_init_valerr1(mdl_1, cls, indexset):
     with pytest.raises(ValueError):
-        cls._create({}, indexset, model=mdl_1)
+        cls._create({}, indexset, model=mdl_1, vartype=mdl_1.continuous_vartype)
 
 
 @pytest.mark.parametrize(
@@ -59,7 +59,7 @@ def test_vardict_init_valerr1(mdl_1, cls, indexset):
 @pytest.mark.parametrize('vardict', [{'A': 0, 'B': 1}, {1: [1, 2], 2: [2, 3]}])
 def test_vardict_init_typerr2(mdl_1, cls, indexset, vardict):
     with pytest.raises(TypeError):
-        cls._create(vardict, indexset, model=mdl_1)
+        cls._create(vardict, indexset, model=mdl_1, vartype=mdl_1.continuous_vartype)
 
 
 @pytest.mark.parametrize(
@@ -72,7 +72,7 @@ def test_vardict_init_typerr2(mdl_1, cls, indexset, vardict):
 def test_vardict_init_valerr2(mdl_1, cls, indexset, incorrect):
     v = add_variables(mdl_1, indexset, 'C')
     with pytest.raises(ValueError):
-        cls._create(v, incorrect, model=mdl_1)
+        cls._create(v, incorrect, model=mdl_1, vartype=mdl_1.continuous_vartype)
 
 
 @pytest.mark.parametrize('name', [None, 'KEY'])
@@ -151,6 +151,50 @@ def test_vardict_init_valname_update_typeerr(mdl_1, indexset, input):
     v = add_variables(mdl_1, indexset, 'C', name='VAL')
     with pytest.raises(TypeError):
         v.value_name = input
+
+
+@pytest.mark.parametrize('indexset', [IndexSet1D(range(2)), IndexSetND(range(2), range(2))])
+def test_vardict_attr_model_pass(mdl_1, indexset):
+    v = add_variables(mdl_1, indexset, 'C')
+    assert v.model is mdl_1
+
+
+@pytest.mark.parametrize('indexset', [IndexSet1D(range(2)), IndexSetND(range(2), range(2))])
+def test_vardict_attr_model_attrerr(mdl_1, indexset):
+    v = add_variables(mdl_1, indexset, 'C')
+    with pytest.raises(AttributeError):
+        v.model = 1
+
+
+@pytest.mark.parametrize(
+    'typ',
+    ['continuous', 'integer', 'binary', 'semicontinuous', 'semiinteger', 'C', 'I', 'B', 'SC', 'SI'],
+)
+@pytest.mark.parametrize('indexset', [IndexSet1D(range(2)), IndexSetND(range(2), range(2))])
+def test_vardict_attr_vartype_pass(mdl_1, indexset, typ):
+    v = add_variables(mdl_1, indexset, typ, lb=1)
+    match typ.lower():
+        case 'continuous' | 'c':
+            assert v.vartype is mdl_1.continuous_vartype
+        case 'binary' | 'b':
+            assert v.vartype is mdl_1.binary_vartype
+        case 'integer' | 'i':
+            assert v.vartype is mdl_1.integer_vartype
+        case 'semicontinuous' | 'sc':
+            assert v.vartype is mdl_1.semicontinuous_vartype
+        case 'semiinteger' | 'si':
+            assert v.vartype is mdl_1.semiinteger_vartype
+
+
+@pytest.mark.parametrize(
+    'typ',
+    ['continuous', 'integer', 'binary', 'semicontinuous', 'semiinteger', 'C', 'I', 'B', 'SC', 'SI'],
+)
+@pytest.mark.parametrize('indexset', [IndexSet1D(range(2)), IndexSetND(range(2), range(2))])
+def test_vardict_attr_vartype_attrerr(mdl_1, indexset, typ):
+    v = add_variables(mdl_1, indexset, typ, lb=1)
+    with pytest.raises(AttributeError):
+        v.vartype = 1
 
 
 @pytest.mark.parametrize('indexset', [IndexSet1D(['A', 'B', 'C']), IndexSetND(range(2), range(2))])

@@ -147,3 +147,32 @@ def rs_mdl():
     yield mdl
 
     mdl.end()
+
+
+@pytest.fixture()
+def expected_infeas_log_end():
+    text = '\n'.join(
+        [
+            '-------------------------------------------------------------------------------------',
+            '',
+        ]
+    )
+    return text
+
+
+@pytest.fixture(scope='module')
+def infeas_mdl():
+    mdl = Model(name='dummy', checker='off', ignore_names=True)
+    desk = mdl.integer_var(name='desk')
+    cell = mdl.integer_var(name='cell')
+    mdl.add_constraints_(
+        [
+            0.2 * desk + 0.4 * cell <= 400,
+            0.2 * desk + 0.4 * cell >= 500,
+        ]
+    )
+    mdl.maximize(12 * desk + 20 * cell)
+
+    yield mdl
+
+    mdl.end()

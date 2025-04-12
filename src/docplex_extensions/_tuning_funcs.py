@@ -211,13 +211,13 @@ def _tune(
             if not (tuning_name == 'tune.repeat' and batch_mode) and not (
                 tuning_name == 'tune.measure' and not batch_mode
             ):
-                log_header += f'   {tuning_name :<40} {tuning_val}\n'
+                log_header += f'   {tuning_name:<40} {tuning_val}\n'
 
         # Log fixed params
         log_header += '\nFixed parameters:\n'
         if fixed_params_and_values:
             for fixed_name, fixed_val in fixed_params_and_values.items():
-                log_header += f'   {fixed_name :<40} {fixed_val}\n'
+                log_header += f'   {fixed_name:<40} {fixed_val}\n'
         else:
             log_header += '   None\n'
 
@@ -246,7 +246,7 @@ def _tune(
         if improving_params_and_values:  # pragma: no cover
             log_footer += 'Tuned parameters:\n'
             for tuned_name, tuned_val in improving_params_and_values.items():
-                log_footer += f'   {tuned_name :<40} {tuned_val}\n'
+                log_footer += f'   {tuned_name:<40} {tuned_val}\n'
         else:
             log_footer += 'The tuning tool could not find a better set of parameters\n'
 

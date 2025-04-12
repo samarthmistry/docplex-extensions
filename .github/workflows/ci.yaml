@@ -49,7 +49,6 @@ jobs:
       - name: Commit file changes from Ruff
         if: steps.verify-ruff-change.outputs.files_changed == 'true'
         run: |
-          git pull
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add -A
@@ -61,6 +60,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.head_ref }}
+          force: true
 
       - name: Check that docs can be built + Lint python docstrings with numpydoc (through Sphinx)
         # Will FAIL if Sphinx throws any warnings/errors or if any numpydoc lint rule is violated

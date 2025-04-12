@@ -288,8 +288,7 @@ class IndexSetBase(Generic[ElemT]):
                     self._remove_elements(old_multiple)
                 case _:
                     raise TypeError(
-                        'position indices must be integers or slices, not '
-                        f'{type(index).__name__}'
+                        f'position indices must be integers or slices, not {type(index).__name__}'
                     )
             del self._list[index]
         except IndexError:
@@ -952,7 +951,7 @@ class IndexSetND(IndexSetBase[ElemNDT]):
     def _get_repr_header(self) -> str:
         # Header for repr.
         if self.names is not None:
-            return f"{self.__class__.__name__}: ({', '.join(self.names)})"
+            return f'{self.__class__.__name__}: ({", ".join(self.names)})'
         else:
             return f'{self.__class__.__name__}:'
 

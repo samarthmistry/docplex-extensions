@@ -168,7 +168,7 @@ class DictNDMixin(DictBaseMixin[ElemNDT, ValT], SupportsGetItem[ElemNDT, ValT]):
     def _get_repr_header(self) -> str:
         # Header for repr.
         if self.key_names is not None and self.value_name is not None:
-            return f"{self.__class__.__name__}: ({', '.join(self.key_names)}) -> {self.value_name}"
+            return f'{self.__class__.__name__}: ({", ".join(self.key_names)}) -> {self.value_name}'
         else:
             return f'{self.__class__.__name__}:'
 

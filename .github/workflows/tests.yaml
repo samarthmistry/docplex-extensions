@@ -27,7 +27,7 @@ jobs:
 
       - name: Check for changed python files
         id: changed-py-files
-        uses: tj-actions/changed-files@v44
+        uses: tj-actions/changed-files@v46
         with:
           base_sha: ${{ env.main_sha }}
           files: '**/*.py'

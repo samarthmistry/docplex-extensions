@@ -9,7 +9,7 @@ A collection of custom data structures and user-friendly functions for mathemati
 modeling with DOcplex — IBM® Decision Optimization CPLEX® Modeling for Python.
 """
 
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 # Check required dependencies
 from importlib.util import find_spec as _find_spec

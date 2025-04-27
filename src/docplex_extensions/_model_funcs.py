@@ -149,15 +149,18 @@ def solve(model: Model, **kwargs: Any) -> SolveSolution | None:
         if to_reopen:
             stream = open(stream._target.name, 'a')
 
-        # Write solution quality statistics
-        log_footer = '\n' + '  Solution quality statistics  '.center(div_len, '-') + '\n\n'
-        log_footer += str(cplex.solution.get_quality_metrics())
-        log_footer += '\n' + '-' * div_len + '\n'
-        stream.write(log_footer)
+        # Write solution quality statistics if CPLEX finds a feasible solution
+        if solution is None:
+            stream.write('\n' + '-' * div_len + '\n')
+        else:
+            log_footer = '\n' + '  Solution quality statistics  '.center(div_len, '-') + '\n\n'
+            log_footer += str(cplex.solution.get_quality_metrics())
+            log_footer += '\n' + '-' * div_len + '\n'
+            stream.write(log_footer)
+        stream.flush()
 
         # When logging to stream objects, close them at the end
         if to_reopen:
-            stream.flush()
             stream.close()
 
     return solution

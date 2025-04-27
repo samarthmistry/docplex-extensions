@@ -6,7 +6,7 @@
 
 import pytest
 
-from docplex_extensions import ParamDict1D, ParamDictND
+from docplex_extensions import IndexSetND, ParamDict1D, ParamDictND
 
 
 @pytest.fixture
@@ -37,3 +37,13 @@ def paramdictNd_pop2():
 @pytest.fixture
 def paramdictNd_pop3():
     return ParamDictND({('A', 'B'): 0, ('C', 'D'): 1, ('E', 'F'): 2})
+
+
+@pytest.fixture
+def paramdictNd_cmb2():
+    return ParamDictND({j: i for i, j in enumerate(IndexSetND(range(2), range(2)))})
+
+
+@pytest.fixture
+def paramdictNd_cmb3():
+    return ParamDictND({j: i for i, j in enumerate(IndexSetND(range(2), range(2), range(2)))})

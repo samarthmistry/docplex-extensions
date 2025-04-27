@@ -635,10 +635,10 @@ class ParamDictND(ParamDictBase[ElemNDT, ParamT], DictNDMixin[ElemNDT, ParamT]):
         """
         self._check_for_calc_stat(stat_func)
         if stat_func == 'sum' and pattern:
-            res: int | float = sum(self._get_matching_values(*pattern))
+            res: int | float = sum(self.subset_values(*pattern))
         elif stat_func != 'sum' and pattern:
             try:
-                res = getattr(statistics, stat_func)(self._get_matching_values(*pattern))
+                res = getattr(statistics, stat_func)(self.subset_values(*pattern))
             except statistics.StatisticsError:
                 res = 0
         else:

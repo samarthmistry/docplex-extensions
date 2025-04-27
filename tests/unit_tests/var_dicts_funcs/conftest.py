@@ -7,6 +7,8 @@
 import pytest
 from docplex.mp.model import Model
 
+from docplex_extensions import IndexSetND
+
 
 @pytest.fixture(scope='module')
 def mdl_1():
@@ -20,3 +22,13 @@ def mdl_2():
     mdl_2 = Model(ignore_names=True)
     yield mdl_2
     mdl_2.end()
+
+
+@pytest.fixture
+def setNd_cmb2():
+    return IndexSetND(range(2), range(2))
+
+
+@pytest.fixture
+def setNd_cmb3():
+    return IndexSetND(range(2), range(2), range(2))

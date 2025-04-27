@@ -92,6 +92,13 @@ Mapping operations
    ParamDictND.popitem
    ParamDictND.setdefault
 
+Efficient subset selection
+--------------------------
+.. autosummary::
+
+   VarDictND.subset_keys
+   VarDictND.subset_values
+
 Views
 -----
 - ``ParamDictND.items()``

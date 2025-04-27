@@ -497,5 +497,5 @@ class VarDictND(VarDictBase[ElemNDT, VarT], DictNDMixin[ElemNDT, VarT]):
         docplex.mp.ZeroExpr()
         """
         if pattern:
-            return self.model.sum_vars_all_different(self._get_matching_values(*pattern))
+            return self.model.sum_vars_all_different(self.subset_values(*pattern))
         return self.model.sum_vars_all_different(self.values())

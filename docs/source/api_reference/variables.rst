@@ -89,6 +89,13 @@ Mapping operations
    VarDictND.get
    VarDictND.lookup
 
+Efficient subset selection
+--------------------------
+.. autosummary::
+
+   VarDictND.subset_keys
+   VarDictND.subset_values
+
 Views
 -----
 - ``VarDictND.items()``

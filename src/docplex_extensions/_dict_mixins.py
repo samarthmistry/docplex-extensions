@@ -172,7 +172,7 @@ class DictNDMixin(DictBaseMixin[ElemNDT, ValT], SupportsGetItem[ElemNDT, ValT]):
         else:
             return f'{self.__class__.__name__}:'
 
-    def _subset_keys(self, *pattern: Any) -> list[ElemNDT]:
+    def subset_keys(self, *pattern: Any) -> list[ElemNDT]:
         """Get a subset of the N-dim tuple keys of the Dict with a wildcard pattern.
 
         Parameters
@@ -202,7 +202,7 @@ class DictNDMixin(DictBaseMixin[ElemNDT, ValT], SupportsGetItem[ElemNDT, ValT]):
         except Exception as exc:
             self._reraise_exc_from_indexset(exc)
 
-    def _get_matching_values(self, *pattern: Any) -> tuple[ValT, ...]:
+    def subset_values(self, *pattern: Any) -> list[ValT]:
         """Get Dict values for all keys that match the wildcard pattern.
 
         Parameters
@@ -214,7 +214,7 @@ class DictNDMixin(DictBaseMixin[ElemNDT, ValT], SupportsGetItem[ElemNDT, ValT]):
 
         Returns
         -------
-        tuple
+        list
 
         Raises
         ------
@@ -227,13 +227,13 @@ class DictNDMixin(DictBaseMixin[ElemNDT, ValT], SupportsGetItem[ElemNDT, ValT]):
         ValueError
             If the pattern has no wildcard or all wildcards.
         """
-        keys = self._subset_keys(*pattern)
+        keys = self.subset_keys(*pattern)
         match len(keys):
             case 0:
-                res: tuple[ValT, ...] = tuple()
+                res: list[ValT] = []
             case 1:
-                res = (self[keys[0]],)
+                res = [self[keys[0]]]
             case _:
-                res = itemgetter(*keys)(self)
+                res = list(itemgetter(*keys)(self))
 
         return res

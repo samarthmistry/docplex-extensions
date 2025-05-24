@@ -366,6 +366,13 @@ def test_squeeze_w_rmvd_elem_pop(input, index, indices, expected):
     assert input.squeeze(*indices) == expected
 
 
+@pytest.mark.parametrize('sub_val', [('*', 1), ('*', 2), (0, '*'), (2, '*')])
+@pytest.mark.parametrize('sqz_idx', [0, 1])
+def test_squeeze_after_subset(setNd_int_cmb2, sub_val, sqz_idx):
+    _ = setNd_int_cmb2.subset(*sub_val)
+    assert_sets_same(setNd_int_cmb2.squeeze(sqz_idx), IndexSet1D(range(2)))
+
+
 def test_squeeze_after_clear(setNd_int_cmb2):
     _ = setNd_int_cmb2.squeeze(0)
     setNd_int_cmb2.clear()

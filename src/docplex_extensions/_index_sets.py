@@ -1312,7 +1312,11 @@ class IndexSetND(IndexSetBase[ElemNDT]):
 
         given = tuple(v for v in pattern if v != '*')  # Wildcard filtering
 
-        return self._groupby(*indices)[given]
+        # Use `get` instead of `__getitem__`` because we don't want to update the defaultdict with
+        # an empty list for keys that are not preset prior to returning the empty list. Leads to a
+        # side-effect in `squeeze` because the keys are cached in the defaultdict. So directly
+        # return an empty list with get instead.
+        return self._groupby(*indices).get(given, list())
 
     @overload
     def squeeze(  # numpydoc ignore=GL08
